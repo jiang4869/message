@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../static/css/mycss.css" th:href="@{/css/mycss.css}" rel="stylesheet">
+    <script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet"  href="../static/plugin/font-awesome/css/font-awesome.min.css" th:href="@{/plugin/font-awesome/css/font-awesome.min.css}">
+    <style>
+
+    </style>
+    <script>
+        $(function () {
+            $.get("nest.html", function (data) {
+                $("#nest").html(data);
+            });
+        });
+    </script>
+</head>
+<body>
+
+
+<div class="container-fluid m-0 p-0">
+    <div id="nest"></div>
+    <!--导航栏-->
+    <div class="container-lg-fluid shadow bg-dark mb-4" th:replace="_fragments::nav">
+
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg   ">
+                <a class="navbar-brand font-weight-normal font-italic" href="index.html" style="font-size: 1.5em">留言板</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog"
+                        aria-controls="navbarOJ" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarBlog">
+                    <ul class="navbar-nav mr-auto ">
+                        <li class="nav-item text-dark">
+                            <a class="nav-link   font-weight-normal " href="index.html"><i
+                                    class="fa fa-home mini  mr-1"></i>首页 <span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item text-dark">
+                            <a class="nav-link  font-weight-normal" href="note.html"><i
+                                    class="fa fa-envelope mini  mr-1"></i>留言</a>
+                        </li>
+
+
+                    </ul>
+                    <a type="button nav-item " class="nav-item btn float-right  font-weight-normal hover text-primary ml-3" href="register.html">注册</a>
+                    <a type="button nav-item " class="nav-item btn float-right  font-weight-normal hover text-primary ml-3" href="login.html">登录</a>
+
+
+                    <div class="btn-group nav-item">
+                        <span type="button" class="dropdown-toggle text-light" data-toggle="dropdown" aria-haspopup="true">
+                            username
+                        </span>
+                        <div class="dropdown-menu">
+                            <button class="dropdown-item" type="button" id="logout" href="logout" th:href="@{/user/logout}">Logout</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </nav>
+        </div>
+    </div>
+
+<!--    <div id="netEasy-music" style="position: fixed;width: 0%;z-index:9999;" >-->
+<!--&lt;!&ndash;        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=300 src="http://music.163.com/outchain/player?type=0&id=4864025307&auto=0"></iframe>&ndash;&gt;-->
+
+<!--        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=350 src="//music.163.com/outchain/player?type=0&id=491777392&auto=1&height=430"></iframe>-->
+<!--    </div>-->
+
+
+
+
+
+    <div>
+
+        <script>
+            $("#btn").click(function () {
+                $.post("/message/user/test","",function (data) {
+                    console.log(data);
+                    console.log(data.msg)
+                    if(data.flag==true){
+                        console.log(true);
+                    }else{
+                        console.log(false);
+                    }
+                },'json')
+            })
+        </script>
+    </div>
+
+
+    <!--页脚-->
+    <div class="jumbotron jumbotron-fluid bg-dark" th:replace="_fragments::footer" style="margin-top: 100%;margin-bottom: 10%">
+        <div class="container-lg" style="color: white">
+            <div class="row ">
+
+                <div class="col-lg-auto footer-div" >
+                    <div class="container text-center">
+                        <img src="./static/img/csdncode.png" alt="二维码"  style="width: 110px;height: 110px">
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div">
+                    <h4 class="me-h4 text-center">联系我</h4>
+                    <div class="container text-center">
+                        <a href="#" class="me-a text-center " style="text-decoration:none;">Email：1121429190@qq.com</a>
+                        <br>
+                        <a href="#" class="me-a text-center" style="text-decoration:none;">QQ：1121429190</a>
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div" style="border: none !important;">
+                    <div class="container text-center">
+                        <h4 class="me-h4 text-center" >Blog</h4>
+                        <p class="small text-light summary-text">这是我的个人博客、记录学习进度和关于编程、写作、思考相关的任何内容...</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="divier"></div>
+            <div class="small text-center">Copyright © 2020 - 2020 jiangxiaoju Designed by jiangxiaoju</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

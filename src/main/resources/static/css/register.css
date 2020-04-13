@@ -1,0 +1,20 @@
+#register div label:first-child {
+    width: 25%;
+    padding-right: 20px;
+    display: inline-block;
+
+    text-align: right;
+}
+
+#register div input {
+    width: 45%;
+}
+
+#register .errmsg {
+    width: 30%;
+    color: red;
+    font-size: smaller;
+    padding-left: 10px;
+    display: inline-block;
+    text-align: left;
+}

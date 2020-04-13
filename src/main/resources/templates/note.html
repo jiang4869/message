@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../static/css/mycss.css" th:href="@{/css/mycss.css}" rel="stylesheet">
+    <script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" href="../static/plugin/font-awesome/css/font-awesome.min.css"
+          th:href="@{/plugin/font-awesome/css/font-awesome.min.css}">
+
+    <style>
+
+    </style>
+    <script>
+
+
+        function reply(obj) {
+
+            // th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}"
+
+            // alert(obj)
+            var commentId = $(obj).data('commentid');
+            var parentCommentId = $(obj).data('parentcommentid');
+            var nickName = $(obj).data('nickname');
+            // alert(commentId)
+            $("#parentCommentId").val(parentCommentId);
+            $("#replyCommentId").val(commentId);
+
+
+            var top = $("#content").offset().top;
+
+            $("#content").attr("placeholder", "@" + nickName).focus();
+            $(window).scrollTo(top, 500);
+
+        }
+
+        function deletecomment(obj) {
+
+            var cid = $(obj).data('commentid');
+            $("#commentslist").load(/*[[@{comment/delete}]]*/"comment/delete",
+                {
+                    'cid': cid
+                })
+        }
+
+
+        function nextpage(obj) {
+            var page = $(obj).data('page');
+            $("#commentslist").load(/*[[@{comment/commentlist}]]*/"comment/commentlist",
+                {
+                    'page': page
+                })
+
+        }
+
+        function prepage(obj) {
+            var page = $(obj).data('page');
+            $("#commentslist").load(/*[[@{comment/commentlist}]]*/"comment/commentlist",
+                {
+                    'page': page
+                })
+        }
+        function changepage(obj) {
+            var page = $("#page").val();
+            $("#commentslist").load(/*[[@{comment/commentlist}]]*/"comment/commentlist",
+                {
+                    'page': page
+                })
+        }
+
+        $(function () {
+            $.get("nest.html", function (data) {
+                $("#nest").html(data);
+            });
+
+
+            $("#commentslist").load(/*[[@{comment/commentlist}]]*/"comment/commentlist",)
+
+        });
+    </script>
+</head>
+<body>
+<div class="container-fluid m-0 p-0">
+    <div id="nest"></div>
+    <!--导航栏-->
+    <div class="container-lg-fluid shadow bg-dark mb-4" th:replace="_fragments::nav">
+
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg   ">
+                <a class="navbar-brand font-weight-normal font-italic" href="index.html"
+                   style="font-size: 1.5em">留言板</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog"
+                        aria-controls="navbarOJ" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarBlog">
+                    <ul class="navbar-nav mr-auto ">
+                        <li class="nav-item text-dark">
+                            <a class="nav-link   font-weight-normal " href="index.html"><i
+                                    class="fa fa-home mini  mr-1"></i>首页 <span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item text-dark">
+                            <a class="nav-link  font-weight-normal" href="note.html"><i
+                                    class="fa fa-envelope mini  mr-1"></i>留言</a>
+                        </li>
+                    </ul>
+
+                    <a type="button nav-item "
+                       class="nav-item btn float-right  font-weight-normal hover text-primary ml-3">登录</a>
+
+                </div>
+
+            </nav>
+        </div>
+
+    </div>
+
+    <div class="container-lg mt-lg-5 ">
+        <div class="card border p-2 ">
+            <div class="card-header text-info  border-bottom border-info" style="background-color: white;">
+                留言
+            </div>
+
+            <!--            留言发送输入框-->
+            <div class="card-body">
+                <input type="hidden" name="parentCommentId" value="-1" id="parentCommentId">
+                <input type="hidden" name="replyCommentId" value="-1" id="replyCommentId">
+                <input type="hidden" name="uid" th:value="${session.user.uid}" id="uid">
+                <!--            输入框-->
+                <div id="noteEdit">
+                    <textarea name="content" id="content" placeholder="说点什么。。。"></textarea>
+                </div>
+
+                <!--提交列表-->
+                <div class="container-fluid m-0 mt-3 p-0 h-100">
+
+                    <div class="border rounded pr-0  pl-2 inline ">
+                        <i class="fa fa-user  mr-1" style="color: #ccc"></i>
+                        <input type="text" placeholder="姓名" class="pl-2 m-0 h-100 border-0 pr-0" name="username"
+                               id="username"
+                               th:value="${session.user.userName}">
+                    </div>
+                    <div class="border rounded   pl-2 pr-0  inline">
+                        <i class="fa fa-envelope  mr-1" style="color: #ccc"></i>
+                        <input type="text" placeholder="邮箱" class="pl-2 h-100 border-0" name="email" id="email"
+                               th:value="${session.user.email}">
+                    </div>
+                    <div class=" p-0  p-2 inline">
+                        <div class="container ">
+                            <input type="checkbox" class="border-0 check-box check-box-table-cell" name="remind"
+                                   id="remind"
+                                   th:value="true">
+                            开启提醒
+                        </div>
+                    </div>
+                    <div class=" mb-1 p-0  inline  btn  btn-info text-center">
+                        <div class="container  text-center pt-1" id="sender">
+                            <li class="fa fa-edit"></li>
+                            发送
+                            <!--                        <input type="hidden" class="border-0 btn-info ">-->
+                        </div>
+                    </div>
+                    <div class=" mb-1 p-0  inline small text-danger   text-center">
+                        <div class="container  text-center pt-1" id="errmsg">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--留言列表-->
+
+                <div th:fragment="commentslist" id="commentslist">
+                    <div class=" container-lg mt-lg-5 border p-lg-2" style="border-top: #17a2b8 solid 2px !important;">
+                        <div class="p-1 comments">
+                            <div class="container comment  m-1 p-0" th:each="comment,stat:${comments}">
+                                <a class="me-a avatar p-0 m-0">
+                                    <img class="w-100 h-100 rounded-circle" th:src="@{${comment.user.avatar}}"
+                                         src="https://s1.ax1x.com/2020/04/10/GTQcH1.png"
+                                         alt="">
+                                </a>
+                                <div class=" ml-3 border-left ">
+                                    <div class="container ml-2">
+                                        <a class="author">
+                                            <span th:text="${comment.userName}">王也</span>
+                                            <span class="border-primary border rounded text-primary small  p-1"
+                                                  th:text="${comment.user.nickName}">亿贫如洗</span>
+                                            <span class="summary-text small"
+                                                  th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-04-10 16:01:27</span>
+
+                                            <a href="#" onclick="reply(this)"
+                                               th:attr="data-commentId=${comment.cid},data-nickName=${comment.userName},data-parentCommentId=${comment.parentCommentId!=null ? comment.parentCommentId:comment.cid}"><span
+                                                    class="summary-text small">回复ta</span></a>
+                                            <a href="javascript:void(0);" onclick="deletecomment(this)"
+                                               th:attr="data-commentid=${comment.cid}"
+                                               th:if="${session.user.uid}==${comment.uid}"><span
+                                                    class="summary-text small">删除</span></a>
+                                        </a>
+                                    </div>
+
+                                    <div class="messageText ml-2 container m-2" th:text="${comment.content}">诸葛青，你败过吗？
+                                    </div>
+                                    <!--  评论回复-->
+                                    <div class="p-1 comments m-3">
+                                        <div class="container comment  m-1 p-0"
+                                             th:each="reply,replystat: ${comment.replyComments}">
+                                            <a class="me-a avatar p-0 m-0 ">
+                                                <img class="w-100 h-100 rounded-circle" th:src="@{${reply.user.avatar}}"
+                                                     src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586518306370&di=600bf4377f924f0839d54e1c415228da&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201712%2F17%2F20171217170206_MAmwi.png"
+                                                     alt="">
+                                            </a>
+                                            <div class=" ml-3  ">
+                                                <div class="container ml-2">
+                                                    <a class="author ">
+                                                        <span th:text="${reply.userName}">冯宝宝</span>
+                                                        <span class="border-primary border rounded text-primary small  p-1"
+                                                              th:text="${reply.user.nickName}">机智一批</span>
+                                                        <span class="text-info"
+                                                              th:text="|@ ${reply.replyToComment.userName}|">@王也 </span>
+                                                        <span class="summary-text small"
+                                                              th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-04-10 16:01:27</span>
+                                                    </a>
+                                                </div>
+                                                <div class="messageText ml-2 container m-2" th:text="${reply.content}">
+                                                    王也，你被埋过吗？
+                                                </div>
+                                                <div class="messageText ml-2 container m-2">
+
+                                                    <a href="#" onclick="reply(this) "
+                                                       th:attr="data-commentId=${reply.cid},data-nickName=${reply.userName},data-parentCommentId=${reply.parentCommentId!=null ? reply.parentCommentId:reply.cid}"><span
+                                                            class="summary-text small">回复ta</span></a>
+                                                    <a href="#" onclick="deletecomment(this)"
+                                                       th:attr="data-commentid=${reply.cid}"
+                                                       th:if="${session.user.uid}==${reply.uid}"><span
+                                                            class="summary-text small">删除</span></a>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!--/*-->
+                            <div class="container comment  m-1 p-0">
+                                <a class="me-a avatar p-0 m-0">
+                                    <img class="w-100 h-100 rounded-circle"
+                                         src="http://img.jk51.com/img_jk51/146022467.jpeg"
+                                         alt="">
+                                </a>
+                                <div class=" ml-3 border-left ">
+                                    <div class="container ml-2">
+                                        <a class="author">
+                                            <span>冯宝宝</span>
+                                            <span class="border-primary border rounded text-primary small  p-1">机智一批</span>
+                                            <span class="summary-text small">2020-04-10 16:01:27</span>
+                                            <a href="#"><span class="summary-text small">回复ta</span></a>
+                                        </a>
+                                    </div>
+                                    <div class="messageText ml-2 container m-2">他们总说我瓜，其实我一点也不瓜，大多时候我都机智的一批</div>
+                                    <!--  评论回复-->
+                                    <div class="p-1 comments m-3">
+                                        <div class="container comment  m-1 p-0">
+                                            <a class="me-a avatar p-0 m-0 ">
+                                                <img class="w-100 h-100 rounded-circle"
+                                                     src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3020624611,2570469813&fm=26&gp=0.jpg"
+                                                     alt="">
+                                            </a>
+                                            <div class=" ml-3  ">
+                                                <div class="container ml-2">
+                                                    <a class="author ">
+                                                        <span>张楚岚</span>
+                                                        <span class="border-primary border rounded text-primary small  p-1">月下观鸟</span>
+                                                        <span class="text-info">@冯宝宝 </span>
+                                                        <span class="summary-text small">2020-04-10 16:01:27</span>
+                                                    </a>
+                                                </div>
+                                                <div class="messageText ml-2 container m-2">
+                                                    我机智你奶奶个腿儿啊，要不是打不过你，我非敲烂你这颗机智的头，你哪偷的铁锹，你到底多爱埋人！
+                                                </div>
+                                                <div class="messageText ml-2 container m-2"><a href="#"><span
+                                                        class="summary-text small">回复ta</span></a></div>
+                                            </div>
+
+                                        </div>
+                                        <div class="container comment  m-1 p-0">
+                                            <a class="me-a avatar p-0 m-0 ">
+                                                <img class="w-100 h-100 rounded-circle"
+                                                     src="https://s1.ax1x.com/2020/04/10/GTQcH1.png" alt="">
+                                            </a>
+                                            <div class=" ml-3  ">
+                                                <div class="container ml-2">
+                                                    <a class="author ">
+                                                        <span>王也</span>
+                                                        <span class="border-primary border rounded text-primary small  p-1">亿贫如洗</span>
+                                                        <span class="text-info">@冯宝宝 </span>
+                                                        <span class="summary-text small">2020-04-10 16:01:27</span>
+                                                    </a>
+                                                </div>
+                                                <div class="messageText ml-2 container m-2">你这也太溜了！</div>
+                                                <div class="messageText ml-2 container m-2"><a href="#"><span
+                                                        class="summary-text small">回复ta</span></a></div>
+                                            </div>
+
+                                        </div>
+                                        <div class="container comment  m-1 p-0">
+                                            <a class="me-a avatar p-0 m-0 ">
+                                                <img class="w-100 h-100 rounded-circle"
+                                                     src="http://img.jk51.com/img_jk51/146022467.jpeg"
+                                                     alt="">
+                                            </a>
+                                            <div class=" ml-3  ">
+                                                <div class="container ml-2">
+                                                    <a class="author ">
+                                                        <span>冯宝宝</span>
+                                                        <span class="border-primary border rounded text-primary small  p-1">机智一批</span>
+                                                        <span class="text-info">@王也 </span>
+                                                        <span class="summary-text small">2020-04-10 16:01:27</span>
+                                                    </a>
+                                                </div>
+                                                <div class="messageText ml-2 container m-2">没啥子，维手熟尔！</div>
+                                                <div class="messageText ml-2 container m-2 "><a href="#noteEdit"><span
+                                                        class="summary-text small">回复ta</span></a></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--*/-->
+                        </div>
+                    </div>
+
+                    <div class="container-lg">
+                        <nav aria-label="Page navigation" class="mt-3 ">
+                            <ul class="pagination">
+                                <li class="page-item"><span class="page-link  changepage" onclick="prepage(this)"
+                                                            th:attr="data-page=${page.current - 1 >1?page.current -1: 1}"
+                                                            style="color: #17a2b8;cursor:pointer">上一页</span></li>
+                                <li class="page-item"><a class="page-link changepage" href="javascript:void(0)"
+                                                         style="color: #17a2b8">当前在第<span th:text="${page.current}">1</span>页</a></li>
+                                <li class="page-item"><span class="page-link" onclick="nextpage(this)"
+                                                            th:attr="data-page=${page.current + 1 > page.pages?page.pages: page.current + 1}"
+                                                            style="color: #17a2b8;cursor:pointer">下一页</span></li>
+                                <li class="page-item text-center  mt-2 ml-2"></li>
+                                <li class="page ml-2 mt-1 w-25 ">
+                                    <span class="text-center " th:text="'共'+ ${page.getPages()}+ '页'">共20页</span>
+                                    <span class="text-center ">跳转到</span>
+                                    <input type="text" class="w-25   rounded" name="page" id="page">
+                                    <span class="text-center ">页</span>
+                                    <a class="btn btn-primary " href="javascript:void(0)" id="pagebtn" onclick="changepage(this)">确定</a>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+
+                $(function () {
+
+                    $(".changepage").click(function () {
+                        var page = $(this).attr('data-page');
+
+                        // comment/commentlist
+                        console.log("pages")
+                        $("#commentslist").load(/*[[@{comment/commentlist}]]*/"comment/commentlist",
+                            {
+                                'page': page
+                            }, function () {
+                                var page = $("#page").val('');
+                            })
+                    })
+
+
+                    function clear() {
+
+                        $("#content").val('');
+                        $("#parentCommentId").val('-1');
+                        $('#replyCommentId').val('-1');
+                        $('#remind').removeAttr('checked');
+                        $("#content").attr('placeholder', '说点什么。。');
+                    }
+
+                    $(".reply").click(function () {
+                        alert('addasfasf')
+                    })
+
+                    function checkEmail() {
+                        var email = $("#email").val();
+                        var regEmail =  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+                        var flag = regEmail.test(email);
+                        if (flag) {
+                            $("#errmsg").text("");
+                        } else {
+
+                            $("#errmsg").text("email格式错误");
+                        }
+                        return flag;
+                    }
+
+
+                    $("#sender").click(function () {
+                        var content = $("#content").val();
+                        if (content == null || content.length <= 0) {
+                            $("#errmsg").text("留言内容不能为空");
+                            return;
+                        }
+                        var email = $("#email").val();
+                        if (!checkEmail()) {
+                            return;
+                        }
+                        var username = $("#username").val();
+                        if (username == null || username.length <= 0) {
+                            $("#errmsg").text("姓名不能为空");
+                            return;
+                        }
+
+                        var parentCommentId = $("#parentCommentId").val();
+                        var replyCommentId = $("#replyCommentId").val();
+                        var remind = $("#remind").prop("checked");
+                        var uid = $("#uid").val();
+
+
+                        $("#commentslist").load(/*[[@{comment/postcomment}]]*/"comment/postcomment",
+                            {
+                                'userName': username,
+                                'email': email,
+                                'content': content,
+                                'parentCommentId': parentCommentId,
+                                'replyCommentId': replyCommentId,
+                                'remind': remind,
+                                'uid': uid
+                            }, function () {
+                                clear();
+                            })
+
+                    })
+                })
+            </script>
+
+
+        </div>
+
+    </div>
+
+    <!--页脚-->
+    <div class="jumbotron jumbotron-fluid bg-dark" th:replace="_fragments::footer"
+         style="margin-top: 100%;margin-bottom: 10%">
+        <div class="container-lg" style="color: white">
+            <div class="row ">
+
+                <div class="col-lg-auto footer-div">
+                    <div class="container text-center">
+                        <img src="./static/img/csdncode.png" alt="二维码" style="width: 110px;height: 110px">
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div">
+                    <h4 class="me-h4 text-center">联系我</h4>
+                    <div class="container text-center">
+                        <a href="#" class="me-a text-center " style="text-decoration:none;">Email：1121429190@qq.com</a>
+                        <br>
+                        <a href="#" class="me-a text-center" style="text-decoration:none;">QQ：1121429190</a>
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div" style="border: none !important;">
+                    <div class="container text-center">
+                        <h4 class="me-h4 text-center">Blog</h4>
+                        <p class="small text-light summary-text">这是我的个人博客、记录学习进度和关于编程、写作、思考相关的任何内容...</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="divier"></div>
+            <div class="small text-center">Copyright © 2020 - 2020 jiangxiaoju Designed by jiangxiaoju</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

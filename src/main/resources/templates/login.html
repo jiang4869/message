@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../static/css/mycss.css" th:href="@{/css/mycss.css}" rel="stylesheet">
+    <script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" href="../static/plugin/font-awesome/css/font-awesome.min.css" th:href="@{/plugin/font-awesome/css/font-awesome.min.css}">
+
+    <style>
+
+    </style>
+    <script>
+        function getRootPath() {
+            var pathName = window.location.pathname.substring(1);
+            var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/'));
+            return window.location.protocol + '//' + window.location.host + '/' + webName + '/';
+        }
+
+        $(function () {
+            $.get("nest.html", function (data) {
+                $("#nest").html(data);
+            });
+            function getRootPath() {
+                var pathName = window.location.pathname.substring(1);
+                var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/'));
+                return window.location.protocol + '//' + window.location.host + '/' + webName + '/';
+            }
+
+            $("#login").click(function () {
+
+                var username=$("#username").val();
+                var password=$("#password").val();
+
+                $.post(/*[[@{user/login}]]*/"user/login",{'userName':username,'password':password},function (data) {
+                    if(data.flag==true) {
+                        var rootPath =getRootPath();
+                        window.location=rootPath+'home';
+                    }else{
+                        alert('账户或密码错误')
+                    }
+                },'json')
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+
+<div class="container-fluid m-0 p-0">
+    <div id="nest"></div>
+    <!--导航栏-->
+    <div class="container-lg-fluid shadow bg-dark mb-4" th:replace="_fragments::nav">
+
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg   ">
+                <a class="navbar-brand font-weight-normal font-italic" href="index.html"
+                   style="font-size: 1.5em">留言板</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog"
+                        aria-controls="navbarOJ" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarBlog">
+                    <ul class="navbar-nav mr-auto ">
+                        <li class="nav-item text-dark">
+                            <a class="nav-link   font-weight-normal " href="index.html"><i
+                                    class="fa fa-home mini  mr-1"></i>首页 <span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item text-dark">
+                            <a class="nav-link  font-weight-normal" href="note.html"><i
+                                    class="fa fa-envelope mini  mr-1"></i>留言</a>
+                        </li>
+
+
+                    </ul>
+
+                    <a type="button nav-item "
+                       class="nav-item btn float-right  font-weight-normal hover text-primary ml-3">登录</a>
+
+                </div>
+
+            </nav>
+        </div>
+
+    </div>
+
+    <script>
+
+    </script>
+
+    <!--    login-->
+    <div class="container ">
+        <div class="text-info text-center h5 ">
+            用户登录
+            <span class="text-danger text-center small" th:if="${msg} != null"><br>请先登录</span>
+        </div>
+
+
+        <div class="container  border text-center w-50 p-4 shadow" style="background-color:white ;height: 200px;min-width: 300px">
+            <div class="form-group mt-2">
+                <div class="border rounded pr-0  pl-2 inline ">
+                    <i class="fa fa-user  mr-1" style="color: #ccc"></i>
+                    <input type="text" placeholder="姓名" class="pl-2 m-0 h-100 border-0 pr-0" name="username" id="username">
+                </div>
+            </div>
+           <div class="form-group">
+               <div class="border rounded pr-0  pl-2 inline ">
+                   <i class="fa fa-lock  mr-1" style="color: #ccc"></i>
+                   <input type="password" placeholder="密码" class="pl-2 m-0 h-100 border-0 pr-0" name="password" id="password">
+               </div>
+           </div>
+
+            <div class=" mb-1 p-0  inline  btn  btn-info text-center">
+                <div class="container  text-center pt-1" id="login">
+                    登录
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--页脚-->
+    <div class="jumbotron jumbotron-fluid bg-dark" th:replace="_fragments::footer" style="margin-top: 100%;margin-bottom: 10%">
+        <div class="container-lg" style="color: white">
+            <div class="row ">
+
+                <div class="col-lg-auto footer-div">
+                    <div class="container text-center">
+                        <img src="./static/img/csdncode.png" alt="二维码" style="width: 110px;height: 110px">
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div">
+                    <h4 class="me-h4 text-center">联系我</h4>
+                    <div class="container text-center">
+                        <a href="#" class="me-a text-center " style="text-decoration:none;">Email：1121429190@qq.com</a>
+                        <br>
+                        <a href="#" class="me-a text-center" style="text-decoration:none;">QQ：1121429190</a>
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div" style="border: none !important;">
+                    <div class="container text-center">
+                        <h4 class="me-h4 text-center">Blog</h4>
+                        <p class="small text-light summary-text">这是我的个人博客、记录学习进度和关于编程、写作、思考相关的任何内容...</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="divier"></div>
+            <div class="small text-center">Copyright © 2020 - 2020 jiangxiaoju Designed by jiangxiaoju</div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

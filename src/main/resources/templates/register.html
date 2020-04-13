@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="../static/css/mycss.css" th:href="@{/css/mycss.css}" rel="stylesheet">
+    <script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" href="../static/plugin/font-awesome/css/font-awesome.min.css"
+          th:href="@{/plugin/font-awesome/css/font-awesome.min.css}">
+    <script src="../static/js/register.js" th:src="@{/js/register.js}"></script>
+    <link rel="stylesheet" href="../static/css/register.css" th:href="@{css/register.css}">
+    <style>
+
+    </style>
+    <script>
+        $(function () {
+            $.get("nest.html", function (data) {
+                $("#nest").html(data);
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+
+
+<div class="container-fluid m-0 p-0">
+    <div id="nest"></div>
+    <!--导航栏-->
+    <div class="container-lg-fluid shadow bg-dark mb-4" th:replace="_fragments::nav">
+
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg   ">
+                <a class="navbar-brand font-weight-normal font-italic" href="index.html"
+                   style="font-size: 1.5em">留言板</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog"
+                        aria-controls="navbarOJ" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarBlog">
+                    <ul class="navbar-nav mr-auto ">
+                        <li class="nav-item text-dark">
+                            <a class="nav-link   font-weight-normal " href="index.html"><i
+                                    class="fa fa-home mini  mr-1"></i>首页 <span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item text-dark">
+                            <a class="nav-link  font-weight-normal" href="note.html"><i
+                                    class="fa fa-envelope mini  mr-1"></i>留言</a>
+                        </li>
+
+                    </ul>
+
+                    <a type="button nav-item "
+                       class="nav-item btn float-right  font-weight-normal hover text-primary ml-3"
+                       href="login.html">登录</a>
+
+                </div>
+
+            </nav>
+        </div>
+
+    </div>
+
+
+    <!--    register-->
+    <div class="text-info h5 text-center">
+        用户注册
+    </div>
+    <div class="container mt-4">
+        <div class="card mr-auto ml-auto shadow" style="width: 70%;">
+
+            <div class="card-body">
+                <form action="" method="post" id="register">
+                    <div class="form-group form-inline">
+                        <div class="errmsg"></div>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label for="username" class=" "> <i class="fa fa-user"></i></label>
+
+                        <input type="text" data-toggle="tooltip" title="由6-16个字母或数字组成，必须以字母开头" data-placement="right"
+                               class="form-control" id="username" name="username" placeholder="用户名">
+                        <label for="username" class="errmsg"></label>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label for="nickname" class=""><i class="fa fa-tag"></i></label>
+                        <input type="text" data-toggle="tooltip" title="不能为空" data-placement="right"
+                               class="form-control" id="nickname" name="nickname" placeholder="昵称">
+                        <label for="nickname" class="errmsg"></label>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <label for="password"><i class="fa fa-lock"></i></label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="密码"
+                               data-toggle="tooltip" title="长度必须为8-16个字符" data-placement="right">
+                        <label for="password" class="errmsg mr-auto ml-auto"></label>
+
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <label for="repeatPassword"><i class="fa fa-lock"></i></label>
+                        <input type="password" class="form-control " id="repeatPassword" placeholder="确认密码">
+                        <label for="repeatPassword" class="errmsg"></label>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <label for="email" style=""><i class="fa fa-envelope"></i></label>
+                        <input type="email" class="form-control " id="email" placeholder="邮箱" name="email">
+                        <label for="email" class="errmsg "></label>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="checkCode"><i class="fa fa-pencil"></i></label>
+                        <input type="text" class="form-control " id="checkCode" placeholder="验证码" style="width: 25%;"
+                               name="checkCode">
+                        <button type="button" style="width: 15%;" class="ml-1 btn border" id="sendCheckCode">获取验证码
+                        </button>
+                        <label for="checkCode" class="errmsg "></label>
+                    </div>
+
+                    <input class="btn border offset-5 mt-4" type="submit" value="提交"/>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--页脚-->
+    <div class="jumbotron jumbotron-fluid bg-dark" th:replace="_fragments::footer"
+         style="margin-top: 100%;margin-bottom: 10%">
+        <div class="container-lg" style="color: white">
+            <div class="row ">
+
+                <div class="col-lg-auto footer-div">
+                    <div class="container text-center">
+                        <img src="./static/img/csdncode.png" alt="二维码" style="width: 110px;height: 110px">
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div">
+                    <h4 class="me-h4 text-center">联系我</h4>
+                    <div class="container text-center">
+                        <a href="#" class="me-a text-center " style="text-decoration:none;">Email：1121429190@qq.com</a>
+                        <br>
+                        <a href="#" class="me-a text-center" style="text-decoration:none;">QQ：1121429190</a>
+                    </div>
+                </div>
+                <div class="col-lg-auto footer-div" style="border: none !important;">
+                    <div class="container text-center">
+                        <h4 class="me-h4 text-center">Blog</h4>
+                        <p class="small text-light summary-text">这是我的个人博客、记录学习进度和关于编程、写作、思考相关的任何内容...</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="divier"></div>
+            <div class="small text-center">Copyright © 2020 - 2020 jiangxiaoju Designed by jiangxiaoju</div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

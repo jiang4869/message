@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div class="container-lg-fluid shadow bg-dark mb-4" th:fragment="nav">
+
+    <div id="netEasy-music" style="margin-top:15%;position: fixed;width: 0%;z-index:9999;" >
+        <!--        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=300 src="http://music.163.com/outchain/player?type=0&id=4864025307&auto=0"></iframe>-->
+<!--        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=350 src="//music.163.com/outchain/player?type=0&id=4875238935&auto=1&height=430"></iframe>-->
+<!--        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=350 src="//music.163.com/outchain/player?type=0&id=491777392&auto=1&height=430"></iframe>-->
+
+        <iframe frameborder="no" border="0" marginwidth="0"
+                marginheight="0" width=280 height=300
+                src="http://music.163.com/outchain/player?type=0&id=4864025307&auto=0">
+        </iframe>
+
+
+    </div>
+    <div class="container ">
+        <nav class="navbar navbar-expand-lg   ">
+            <a class="navbar-brand font-weight-normal font-italic" href="index.html" style="font-size: 1.5em">留言板</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog"
+                    aria-controls="navbarOJ" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarBlog">
+                <ul class="navbar-nav mr-auto ">
+                    <li class="nav-item text-dark">
+                        <a class="nav-link   font-weight-normal " href="index.html" th:href="@{/}"><i
+                                class="fa fa-home mini  mr-1"></i>首页 <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item text-dark">
+                        <a class="nav-link  font-weight-normal" href="note.html" th:href="@{/comment}"><i
+                                class="fa fa-envelope mini  mr-1"></i>留言</a>
+                    </li>
+
+
+                </ul>
+
+                    <div class="" th:if="${session.user}==null">
+                        <a type="button "
+                           class="nav-item btn float-right  font-weight-normal hover text-primary ml-3" th:href="@{/login}"
+                           href="login.html">登录</a>
+                        <a type="button "
+                           class="nav-item btn float-right  font-weight-normal hover text-primary ml-3"
+                           th:href="@{/register}" href="register.html">注册</a>
+
+                    </div>
+
+<!--                </div>-->
+                <div th:if="${session.user}!=null">
+                    <a type="button nav-item "
+                       class="nav-item btn float-right  font-weight-normal hover text-primary ml-3"  th:href="@{/user/logout}"
+                       href="#">退出</a>
+
+
+                    <a type="button "
+                       class="nav-item btn float-right  font-weight-normal hover text-primary ml-3"
+                       href="#" th:text="${session.user.userName}">username</a>
+
+                </div>
+            </div>
+
+        </nav>
+    </div>
+</div>
+
+
+<!--页脚-->
+<div class="jumbotron jumbotron-fluid bg-dark" th:fragment="footer" style="margin-top: 100%;margin-bottom: 10%">
+    <div class="container-lg" style="color: white">
+        <div class="row ">
+
+            <div class="col-lg-auto footer-div">
+                <div class="container text-center">
+                    <img src="./static/img/csdncode.png" alt="二维码" style="width: 110px;height: 110px">
+                </div>
+            </div>
+            <div class="col-lg-auto footer-div">
+                <h4 class="me-h4 text-center">联系我</h4>
+                <div class="container text-center">
+                    <a href="#" class="me-a text-center " style="text-decoration:none;">Email：1121429190@qq.com</a>
+                    <br>
+                    <a href="#" class="me-a text-center" style="text-decoration:none;">QQ：1121429190</a>
+                </div>
+            </div>
+            <div class="col-lg-auto footer-div" style="border: none !important;">
+                <div class="container text-center">
+                    <h4 class="me-h4 text-center">Message</h4>
+                    <p class="small text-light summary-text">公共留言板</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="divier"></div>
+        <div class="small text-center">Copyright © 2020 - 2020 jiangxiaoju Designed by jiangxiaoju</div>
+    </div>
+</div>
+
+</body>
+</html>
